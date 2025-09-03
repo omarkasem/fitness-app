@@ -3,6 +3,7 @@ import { Link, useRouter } from 'expo-router'
 import { Text, TextInput, TouchableOpacity, View, SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native'
 import React from 'react'
 import Ionicons from '@expo/vector-icons/Ionicons'
+import GoogleSignIn from '../components/GoogleSignIn'
 
 export default function Page() {
   const { signIn, setActive, isLoaded } = useSignIn()
@@ -44,7 +45,7 @@ export default function Page() {
       <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === "ios" ? "padding" : "height"}>
 
         {/* Header section */}
-        <View className="flex-1 justify-center">
+        <View className="flex-1 justify-center px-6">
           {/* Logo/Branding */}
           <View className="items-center mb-8">
             <View className="w-20 h-20 bg-gradient-to-br ☐ from-blue-600
@@ -56,33 +57,67 @@ export default function Page() {
               FitTracker
             </Text>
             <Text className="text-lg text-gray-600 text-center">
-              Track your fitness journey("\n") and reach your goals
+              Track your fitness journey{'\n'}and reach your goals
             </Text>
           </View>
-        </View>
 
 
-        <Text>Sign in</Text>
-        <TextInput
-          autoCapitalize="none"
-          value={emailAddress}
-          placeholder="Enter email"
-          onChangeText={(emailAddress) => setEmailAddress(emailAddress)}
-        />
-        <TextInput
-          value={password}
-          placeholder="Enter password"
-          secureTextEntry={true}
-          onChangeText={(password) => setPassword(password)}
-        />
-        <TouchableOpacity onPress={onSignInPress}>
-          <Text>Continue</Text>
-        </TouchableOpacity>
-        <View style={{ display: 'flex', flexDirection: 'row', gap: 3 }}>
-          <Text>Don't have an account?</Text>
-          <Link href="/sign-up">
-            <Text>Sign up</Text>
-          </Link>
+          {/* Sign in form */}
+          <View className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6">
+            <Text className="text-2xl font-bold text-gray-900 mb-4 text-center">
+              Welcome Back!
+            </Text>
+            <View className="space-y-4">
+              <View>
+                <Text className="text-gray-700 text-sm mb-2 font-medium">Email Address</Text>
+                <TextInput
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900"
+                  autoCapitalize="none"
+                  value={emailAddress}
+                  placeholder="Enter your email"
+                  onChangeText={(emailAddress) => setEmailAddress(emailAddress)}
+                  keyboardType="email-address"
+                />
+              </View>
+
+              <View>
+                <Text className="text-gray-700 text-sm mb-2 font-medium">Password</Text>
+                <TextInput
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900"
+                  value={password}
+                  placeholder="Enter your password"
+                  secureTextEntry={true}
+                  onChangeText={(password) => setPassword(password)}
+                />
+              </View>
+
+
+            </View>
+          </View>
+
+
+          <TouchableOpacity
+            onPress={onSignInPress}
+            className="w-full bg-blue-600 py-3 rounded-lg mt-2"
+          >
+            <Text className="text-white font-semibold text-center">Sign In</Text>
+          </TouchableOpacity>
+
+          <View className="flex-row items-center my-6">
+            <View className="flex-1 h-[1px] bg-gray-200" />
+            <Text className="mx-4 text-gray-500">or</Text>
+            <View className="flex-1 h-[1px] bg-gray-200" />
+          </View>
+
+          <GoogleSignIn />
+          <View className="flex-row justify-center items-center mt-6">
+            <Text className="text-gray-600">Don't have an account? </Text>
+            <Link href="/sign-up">
+              <Text className="text-blue-600 font-medium">Sign up</Text>
+            </Link>
+          </View>
+
+
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
