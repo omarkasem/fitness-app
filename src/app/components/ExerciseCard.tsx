@@ -28,7 +28,6 @@ const getDifficultyColor = (difficulty: string) => {
 
 
 export default function ExerciseCard({ item, onPress, showChevron = false }: ExerciseCardProps) {
-    console.log(item.difficulty)
     return (
         <TouchableOpacity
             onPress={onPress}
@@ -61,9 +60,9 @@ export default function ExerciseCard({ item, onPress, showChevron = false }: Exe
                     <View className="flex-row items-center mt-2">
                         {item.difficulty && (
                             <View className={`px-3 py-1 rounded-full ${item.difficulty?.toLowerCase() === 'beginner' ? 'bg-green-100' :
-                                    item.difficulty?.toLowerCase() === 'intermediate' ? 'bg-yellow-100' :
-                                        item.difficulty?.toLowerCase() === 'advanced' ? 'bg-red-100' :
-                                            'bg-gray-100'
+                                item.difficulty?.toLowerCase() === 'intermediate' ? 'bg-yellow-100' :
+                                    item.difficulty?.toLowerCase() === 'advanced' ? 'bg-red-100' :
+                                        'bg-gray-100'
                                 }`}>
                                 <Text className={`text-sm font-medium ${getDifficultyColor(item.difficulty.toLowerCase())}`}>
                                     {item.difficulty.charAt(0).toUpperCase() + item.difficulty.slice(1)}

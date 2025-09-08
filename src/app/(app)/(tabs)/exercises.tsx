@@ -78,7 +78,7 @@ export default function exercises() {
         renderItem={({ item }) => (
           <ExerciseCard
             item={item}
-            onPress={() => router.push(`/exercises/${item._id}`)}
+            onPress={() => router.push(`/excersie-detail?id=${item._id}`)}
           />
         )}
         className="flex-1 bg-white"
