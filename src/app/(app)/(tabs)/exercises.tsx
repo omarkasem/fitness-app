@@ -26,11 +26,7 @@ export default function exercises() {
       setFilteredExercises(exercises)
     } else {
       const filtered = exercises.filter((exercise: any) =>
-        exercise.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        exercise.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        exercise.targetMuscles?.some((muscle: string) =>
-          muscle.toLowerCase().includes(searchQuery.toLowerCase())
-        )
+        exercise.name?.toLowerCase().includes(searchQuery.toLowerCase())
       )
       setFilteredExercises(filtered)
     }
