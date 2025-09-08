@@ -91,6 +91,11 @@ export default function ExercieDetail() {
                                 className="relative rounded-xl overflow-hidden bg-gray-100 aspect-video"
                                 onPress={() => Linking.openURL(exercise.videoUrl)}
                             >
+                                <Image
+                                    source={{ uri: `https://img.youtube.com/vi/${exercise.videoUrl.split('v=')[1]?.split('&')[0]}/maxresdefault.jpg` }}
+                                    className="absolute inset-0 w-full h-full"
+                                    resizeMode="cover"
+                                />
                                 <View className="absolute inset-0 items-center justify-center">
                                     <View className="w-16 h-16 bg-white/90 rounded-full items-center justify-center">
                                         <Ionicons name="play" size={32} color="#374151" />
