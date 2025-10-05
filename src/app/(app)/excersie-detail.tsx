@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, StatusBar, TouchableOpacity, ScrollView, Image, Linking } from 'react-native'
+import { View, Text, SafeAreaView, StatusBar, TouchableOpacity, ScrollView, Image, Linking, ActivityIndicator } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { router, useLocalSearchParams } from 'expo-router'
 import Ionicons from '@expo/vector-icons/Ionicons'
@@ -13,6 +13,10 @@ export default function ExercieDetail() {
     const [exercise, setExercise] = useState<Exercise | null>(null)
     const [loading, setLoading] = useState<boolean>(false)
     const { id } = useLocalSearchParams<string>()
+
+    const getAiGuidance = async () => {
+        console.log('getAiGuidance')
+    }
 
 
     useEffect(() => {
@@ -32,6 +36,15 @@ export default function ExercieDetail() {
         fetchExercise()
     }, [id])
 
+    if (loading) {
+        return (
+            <SafeAreaView className='flex-1 bg-gray-50'>
+                <StatusBar barStyle="light-content" />
+                <ActivityIndicator size="large" color="#0000ff" />
+            </SafeAreaView>
+        )
+    }
+
     return (
         <SafeAreaView className='flex-1 bg-gray-50'>
             <StatusBar barStyle="light-content" />
@@ -45,11 +58,11 @@ export default function ExercieDetail() {
                 </TouchableOpacity>
             </View>
 
-            <ScrollView className="flex-1 bg-white">
+            <ScrollView className="flex-1 bg-white" showsVerticalScrollIndicator={false}>
                 {exercise?.image && (
                     <Image
                         source={{ uri: urlFor(exercise.image?.asset?._ref).url() }}
-                        className="w-full h-64"
+                        className="w-full h-48"
                         resizeMode="cover"
                     />
                 )}
@@ -112,9 +125,32 @@ export default function ExercieDetail() {
                     )}
 
 
-                </View>
-            </ScrollView>
+                    <View className="mt-8">
+                        <TouchableOpacity
+                            className="bg-indigo-600 rounded-xl py-4 px-6 flex-row items-center justify-center mb-4"
+                            onPress={getAiGuidance}
+                        >
+                            <Ionicons name="bulb-outline" size={24} color="#ffffff" className="mr-2" />
+                            <Text className="text-white font-semibold text-lg">
+                                Get AI Form & Technique Guidance
+                            </Text>
+                        </TouchableOpacity>
 
+                        <TouchableOpacity
+                            className="bg-gray-200 rounded-xl py-4 px-6 flex-row items-center justify-center"
+                            onPress={() => router.back()}
+                        >
+                            <Ionicons name="close-outline" size={24} color="#374151" className="mr-2" />
+                            <Text className="text-gray-800 font-medium text-lg">
+                                Close Exercise
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+
+
+                </View>
+
+            </ScrollView>
 
         </SafeAreaView>
     )

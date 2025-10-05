@@ -13,10 +13,15 @@ export default function SignUpScreen() {
   const [password, setPassword] = React.useState('')
   const [pendingVerification, setPendingVerification] = React.useState(false)
   const [code, setCode] = React.useState('')
+  const [error, setError] = React.useState('')
+  const [verificationError, setVerificationError] = React.useState('')
 
   // Handle submission of sign-up form
   const onSignUpPress = async () => {
     if (!isLoaded) return
+
+    // Clear any previous errors
+    setError('')
 
     console.log(emailAddress, password)
 
@@ -33,16 +38,26 @@ export default function SignUpScreen() {
       // Set 'pendingVerification' to true to display second form
       // and capture OTP code
       setPendingVerification(true)
-    } catch (err) {
-      // See https://clerk.com/docs/custom-flows/error-handling
-      // for more info on error handling
+    } catch (err: any) {
+      // Handle Clerk errors and display user-friendly messages
       console.error(JSON.stringify(err, null, 2))
+
+      if (err?.errors && err.errors.length > 0) {
+        // Get the first error message
+        const firstError = err.errors[0]
+        setError(firstError.longMessage || firstError.message || 'An error occurred during sign up')
+      } else {
+        setError('An unexpected error occurred. Please try again.')
+      }
     }
   }
 
   // Handle submission of verification form
   const onVerifyPress = async () => {
     if (!isLoaded) return
+
+    // Clear any previous verification errors
+    setVerificationError('')
 
     try {
       // Use the code the user provided to attempt verification
@@ -59,11 +74,19 @@ export default function SignUpScreen() {
         // If the status is not complete, check why. User may need to
         // complete further steps.
         console.error(JSON.stringify(signUpAttempt, null, 2))
+        setVerificationError('Verification incomplete. Please try again.')
       }
-    } catch (err) {
-      // See https://clerk.com/docs/custom-flows/error-handling
-      // for more info on error handling
+    } catch (err: any) {
+      // Handle verification errors and display user-friendly messages
       console.error(JSON.stringify(err, null, 2))
+
+      if (err?.errors && err.errors.length > 0) {
+        // Get the first error message
+        const firstError = err.errors[0]
+        setVerificationError(firstError.longMessage || firstError.message || 'Invalid verification code')
+      } else {
+        setVerificationError('An error occurred during verification. Please try again.')
+      }
     }
   }
 
@@ -90,6 +113,16 @@ export default function SignUpScreen() {
               <Text className="text-2xl font-bold text-gray-900 mb-4 text-center">
                 Verify Your Email
               </Text>
+
+              {/* Verification Error Display */}
+              {verificationError ? (
+                <View className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                  <Text className="text-red-600 text-sm font-medium text-center">
+                    {verificationError}
+                  </Text>
+                </View>
+              ) : null}
+
               <View>
                 <Text className="text-gray-700 text-sm mb-2 font-medium">Verification Code</Text>
                 <TextInput
@@ -146,6 +179,16 @@ export default function SignUpScreen() {
             <Text className="text-2xl font-bold text-gray-900 mb-4 text-center">
               Create Account
             </Text>
+
+            {/* Error Display */}
+            {error ? (
+              <View className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                <Text className="text-red-600 text-sm font-medium text-center">
+                  {error}
+                </Text>
+              </View>
+            ) : null}
+
             <View className="space-y-4">
               <View>
                 <Text className="text-gray-700 text-sm mb-2 font-medium">Email Address</Text>
